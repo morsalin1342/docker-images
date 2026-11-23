@@ -32,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [ adminer-docker, apache-docker, caddy-docker, frankenphp-docker, nginx-docker, php-docker ]
+        repo: [ adminer-docker, apache-docker, caddy-docker, caddy-souin-cache-manager, frankenphp-docker, nginx-docker, php-docker ]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

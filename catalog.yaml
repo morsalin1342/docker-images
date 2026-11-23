@@ -75,6 +75,17 @@ projects:
 
 # Repositories whose "Related" block is not simply "every other project".
 related:
+  caddy-souin-cache-manager:
+    intro: >-
+      This plugin manages the **Souin** cache, which ships in these two images. Either one gives you
+      a Caddy with Souin already compiled in, so the only setup left is enabling the API in your
+      Caddyfile.
+    include: [caddy, frankenphp]
+    descriptions:
+      caddy: Standalone Caddy — Souin with Redis, Otter and SimpleFS backends
+      frankenphp: Caddy + PHP app server, same Souin stack compiled in
+    also_intro: "Also in this family, though none of them ships Souin:"
+    also: [php, nginx, apache]
   cache-manager:
     intro: >-
       This plugin will manage your server-side page cache, with Caddy and Souin as the first planned
