@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
       - uses: ./
 
-  # How each image repository's master compares with this version of the
+  # How each repository's default branch compares with this version of the
   # catalog. A change here is released first and reaches each repository as a
   # Dependabot pull request, so drift here is expected and only reported.
   drift:
