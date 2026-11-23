@@ -58,7 +58,19 @@ def gh_url(m, project):
 def images_cell(m, project):
     if project["kind"] != "image":
         return "—"
-    return " · ".join(f"`{v['hub']}/{project_key(m, project)}`" for _, v in published(m))
+    key = project_key(m, project)
+    refs = [f"`{v['hub']}/{key}`" for _, v in published(m)]
+    if m.get("ghcr_owner"):
+        refs.append(f"`ghcr.io/{m['ghcr_owner']}/{key}`")
+    return " · ".join(refs)
+
+
+def where_published(m):
+    """The intro sentence: every registry an image goes to."""
+    places = [f"Docker Hub as `{v['hub']}/<image>`" for _, v in published(m)]
+    if m.get("ghcr_owner"):
+        places.append(f"GitHub Container Registry as `ghcr.io/{m['ghcr_owner']}/<image>`")
+    return " and to ".join(places)
 
 
 def project_key(m, project):
@@ -72,9 +84,8 @@ def render_github(m, key):
     over = m.get("related", {}).get(key, {})
     include = over.get("include")
     descs = over.get("descriptions", {})
-    nsnames = " and ".join(f"`{v['hub']}` ({v['label']})" for _, v in published(m))
     out = []
-    out.append(over.get("intro") or f"Every image is published under {nsnames}, from the same build.")
+    out.append(over.get("intro") or f"Every image is published to {where_published(m)}, from the same build.")
     out.append("")
     out.append("| Repository | Images | Description |")
     out.append("|---|---|---|")
@@ -111,6 +122,8 @@ def render_hub(m, key, ns):
         for n, v in published(m):
             if n != ns:
                 out.append(f"| [{v['hub']}/{key}](https://hub.docker.com/r/{v['hub']}/{key}) | Same image, {v['label']} namespace |")
+        if m.get("ghcr_owner"):
+            out.append(f"| [ghcr.io/{m['ghcr_owner']}/{key}]({gh_url(m, me)}/pkgs/container/{key}) | Same image, GitHub Container Registry |")
     return "\n".join(out)
 
 
@@ -192,6 +205,9 @@ def check_names(m, key, root):
         for ns in set(re.findall(r"hub\.docker\.com/(?:r|u)/([A-Za-z0-9_.-]+)", t)):
             if ns not in known_hub:
                 bad.append(f"{f.name}: Docker Hub namespace {ns!r} is not in the catalog")
+        for owner in set(re.findall(r"ghcr\.io/([A-Za-z0-9_.-]+)/", t)):
+            if owner != m.get("ghcr_owner"):
+                bad.append(f"{f.name}: GitHub Container Registry owner {owner!r} is not the catalog's ghcr_owner")
         for owner, repo in set(re.findall(r"github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)", t)):
             if repo in repos and owner != repos[repo]:
                 bad.append(f"{f.name}: {owner}/{repo} should be {repos[repo]}/{repo}")

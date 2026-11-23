@@ -5,35 +5,26 @@
 # sync_docs.py, which fills the generated blocks in their READMEs from
 # this file and fails a pull request when anything has drifted.
 #
-# Per-repository pins (httpd 2.4.68, Caddy 2.11.4, ...) are NOT here: each
-# repository keeps its own versions file for those.
+# Version pins (httpd, Caddy, Composer, ...) are NOT here: each repository keeps
+# its own.
 
 version: 1
 
-# The public source of every project lives under this GitHub owner. The org and
-# sitespanel repositories are mirrors that exist for Cloud Build.
+# The public source of every project lives under this GitHub owner.
 source_owner: morsalin1342
 
 # The repository that holds this file. Its own README lists every project.
 catalog_repo: docker-images
 
-# Docker Hub namespaces. A namespace with publish: false is planned, not live,
-# and appears in no README until it is switched on.
+# Where every image is published, from the same build. Personal images go only
+# to these two places, never to an organisation's namespace.
 namespaces:
   personal:
     hub: morsalin1342
     label: personal
     publish: true
     hub_readme: README.dockerhub.md
-  company:
-    hub: easydigital
-    label: organization
-    publish: true
-    hub_readme: README.dockerhub-org.md
-  product:
-    hub: sitespanel
-    label: product
-    publish: false      # planned, not live yet
+ghcr_owner: morsalin1342      # ghcr.io/<ghcr_owner>/<image>
 
 projects:
   caddy:

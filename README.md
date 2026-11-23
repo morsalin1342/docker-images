@@ -1,19 +1,19 @@
 # Docker images
 
-The Docker images published as `morsalin1342/<name>` and `easydigital/<name>` on Docker Hub, and the
-one file that holds what their repositories say about each other.
+The Docker images published as `morsalin1342/<name>` on Docker Hub and `ghcr.io/morsalin1342/<name>`
+on GitHub Container Registry, and the one file that holds what their repositories say about each other.
 
 <!-- BEGIN GENERATED: related (from catalog.yaml in the morsalin1342/docker-images repository; do not edit by hand) -->
-Every image is published under `morsalin1342` (personal) and `easydigital` (organization), from the same build.
+Every image is published to Docker Hub as `morsalin1342/<image>` and to GitHub Container Registry as `ghcr.io/morsalin1342/<image>`, from the same build.
 
 | Repository | Images | Description |
 |---|---|---|
-| [caddy-docker](https://github.com/morsalin1342/caddy-docker) | `morsalin1342/caddy` · `easydigital/caddy` | Standalone Caddy with WAF, rate limiting & caching |
-| [frankenphp-docker](https://github.com/morsalin1342/frankenphp-docker) | `morsalin1342/frankenphp` · `easydigital/frankenphp` | Caddy + PHP app server in one container |
-| [php-docker](https://github.com/morsalin1342/php-docker) | `morsalin1342/php` · `easydigital/php` | Traditional PHP-FPM & CLI images |
-| [nginx-docker](https://github.com/morsalin1342/nginx-docker) | `morsalin1342/nginx` · `easydigital/nginx` | nginx with ModSecurity 3, Brotli, zstd & GeoIP2 |
-| [apache-docker](https://github.com/morsalin1342/apache-docker) | `morsalin1342/apache` · `easydigital/apache` | Apache httpd as a static server or php-fpm application server, no PHP inside |
-| [adminer-docker](https://github.com/morsalin1342/adminer-docker) | `morsalin1342/adminer` · `easydigital/adminer` | Adminer database tool: the official image plus Alpine security updates |
+| [caddy-docker](https://github.com/morsalin1342/caddy-docker) | `morsalin1342/caddy` · `ghcr.io/morsalin1342/caddy` | Standalone Caddy with WAF, rate limiting & caching |
+| [frankenphp-docker](https://github.com/morsalin1342/frankenphp-docker) | `morsalin1342/frankenphp` · `ghcr.io/morsalin1342/frankenphp` | Caddy + PHP app server in one container |
+| [php-docker](https://github.com/morsalin1342/php-docker) | `morsalin1342/php` · `ghcr.io/morsalin1342/php` | Traditional PHP-FPM & CLI images |
+| [nginx-docker](https://github.com/morsalin1342/nginx-docker) | `morsalin1342/nginx` · `ghcr.io/morsalin1342/nginx` | nginx with ModSecurity 3, Brotli, zstd & GeoIP2 |
+| [apache-docker](https://github.com/morsalin1342/apache-docker) | `morsalin1342/apache` · `ghcr.io/morsalin1342/apache` | Apache httpd as a static server or php-fpm application server, no PHP inside |
+| [adminer-docker](https://github.com/morsalin1342/adminer-docker) | `morsalin1342/adminer` · `ghcr.io/morsalin1342/adminer` | Adminer database tool: the official image plus Alpine security updates |
 | [caddy-souin-cache-manager](https://github.com/morsalin1342/caddy-souin-cache-manager) | — | WordPress plugin to view and purge the Souin cache from WP Admin |
 <!-- END GENERATED: related -->
 
@@ -50,9 +50,6 @@ Each repository's own version pins (httpd, Caddy, Composer, nginx modules) stay 
    ```
 
 The `drift` job in this repository's CI shows which repositories will need that.
-
-A namespace with `publish: false` appears in no README. Switching it to `true` makes every
-repository's next `--write` list it.
 
 ## Known limits
 
