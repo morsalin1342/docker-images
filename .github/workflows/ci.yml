@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The catalog parses, and this repository's own README agrees with it.
+  self:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./
+
+  # How each image repository's master compares with this version of the
+  # catalog. A change here is released first and reaches each repository as a
+  # Dependabot pull request, so drift here is expected and only reported.
+  drift:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        repo: [ adminer-docker, apache-docker, caddy-docker, frankenphp-docker, nginx-docker, php-docker ]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: morsalin1342/${{ matrix.repo }}
+          path: target
+          persist-credentials: false
+      - uses: ./
+        with:
+          repo: ${{ matrix.repo }}
+          dir: target

@@ -1,0 +1,28 @@
+name: Docker images catalog check
+description: >-
+  Fail when a repository's Related tables, Docker Hub short description or Dockerfile labels
+  disagree with catalog.yaml in morsalin1342/docker-images.
+author: morsalin1342
+
+inputs:
+  repo:
+    description: The repository's name as catalog.yaml lists it, e.g. caddy-docker
+    default: ${{ github.event.repository.name }}
+  dir:
+    description: Where the repository is checked out
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Install the YAML parser
+      shell: bash
+      run: python3 -m pip install --quiet --disable-pip-version-check "pyyaml==6.0.3"
+    # sync_docs.py and catalog.yaml come from this action's own checkout, so a
+    # caller that pins this action by commit SHA also pins the catalog.
+    - name: Check against the catalog
+      shell: bash
+      env:
+        REPO: ${{ inputs.repo }}
+        DIR: ${{ inputs.dir }}
+      run: python3 "$GITHUB_ACTION_PATH/sync_docs.py" --repo "$REPO" --dir "$DIR" --check

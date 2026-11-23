@@ -1,0 +1,91 @@
+# The shared facts of the sibling repositories: adminer-docker, apache-docker,
+# caddy-docker, frankenphp-docker, nginx-docker, php-docker and the Souin cache plugin.
+#
+# One home for each fact. The repositories do not retype these; they run
+# sync_docs.py, which fills the generated blocks in their READMEs from
+# this file and fails a pull request when anything has drifted.
+#
+# Per-repository pins (httpd 2.4.68, Caddy 2.11.4, ...) are NOT here: each
+# repository keeps its own versions file for those.
+
+version: 1
+
+# The public source of every project lives under this GitHub owner. The org and
+# sitespanel repositories are mirrors that exist for Cloud Build.
+source_owner: morsalin1342
+
+# The repository that holds this file. Its own README lists every project.
+catalog_repo: docker-images
+
+# Docker Hub namespaces. A namespace with publish: false is planned, not live,
+# and appears in no README until it is switched on.
+namespaces:
+  personal:
+    hub: morsalin1342
+    label: personal
+    publish: true
+    hub_readme: README.dockerhub.md
+  company:
+    hub: easydigital
+    label: organization
+    publish: true
+    hub_readme: README.dockerhub-org.md
+  product:
+    hub: sitespanel
+    label: product
+    publish: false      # planned, not live yet
+
+projects:
+  caddy:
+    repo: caddy-docker
+    kind: image
+    description: Standalone Caddy with WAF, rate limiting & caching
+    hub_short: "Caddy with Coraza WAF, rate limiting, Brotli, Souin cache and 6 DNS providers"
+  frankenphp:
+    repo: frankenphp-docker
+    kind: image
+    description: Caddy + PHP app server in one container
+    hub_short: "FrankenPHP: custom Caddy build, 51 PHP extensions, Composer, WP-CLI, Node.js"
+  php:
+    repo: php-docker
+    kind: image
+    description: Traditional PHP-FPM & CLI images
+    hub_short: "PHP-FPM & CLI images: 51 extensions, Composer, WP-CLI, Node.js. PHP 8.2-8.5"
+  nginx:
+    repo: nginx-docker
+    kind: image
+    description: "nginx with ModSecurity 3, Brotli, zstd & GeoIP2"
+    hub_short: "nginx with ModSecurity 3, Brotli, Zstandard, GeoIP2, VTS and OpenTelemetry dynamic modules"
+  apache:
+    repo: apache-docker
+    kind: image
+    description: Apache httpd as a static server or php-fpm application server, no PHP inside
+    hub_short: "Apache httpd as a static server or php-fpm application server — no PHP inside"
+  adminer:
+    repo: adminer-docker
+    kind: image
+    description: "Adminer database tool: the official image plus Alpine security updates"
+    hub_short: "Adminer database tool: the official image with Alpine security updates"
+  # One WordPress plugin for every cache (planned: Caddy with Souin, nginx FastCGI cache, Vinyl Cache).
+  # The old Souin-only plugin, caddy-souin-cache-manager, stays as it was, is unrelated, and is not listed here.
+  cache-manager:
+    repo: cache-manager-for-wordpress
+    kind: plugin
+    status: planned                     # planning only, no release yet (gate G1, 2026-10-04); listed in no README until it has one
+    display_name: Cache Manager for WordPress
+    description: WordPress plugin to manage the page cache from WP Admin (Caddy with Souin today)
+    related_from: [caddy, frankenphp]   # the images whose Related tables list the plugin
+
+# Repositories whose "Related" block is not simply "every other project".
+related:
+  cache-manager:
+    intro: >-
+      This plugin will manage your server-side page cache, with Caddy and Souin as the first planned
+      driver. Both of these images ship Souin already compiled in, so the only setup left is enabling
+      the API in your Caddyfile.
+    include: [caddy, frankenphp]
+    descriptions:
+      caddy: Standalone Caddy — Souin with Redis, Otter and SimpleFS backends
+      frankenphp: Caddy + PHP app server, same Souin stack compiled in
+    also_intro: "Also in this family, though neither ships Souin:"
+    also: [php, nginx, apache]
