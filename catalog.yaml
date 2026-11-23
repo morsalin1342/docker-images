@@ -66,8 +66,14 @@ projects:
     kind: image
     description: "Adminer database tool: the official image plus Alpine security updates"
     hub_short: "Adminer database tool: the official image with Alpine security updates"
+  # The WordPress plugin for the Souin cache that the caddy and frankenphp images compile in.
+  caddy-souin-cache-manager:
+    repo: caddy-souin-cache-manager
+    kind: plugin
+    display_name: Caddy Souin Cache Manager for WordPress
+    description: WordPress plugin to view and purge the Souin cache from WP Admin
+    related_from: [caddy, frankenphp]   # the images whose Related tables list the plugin
   # One WordPress plugin for every cache (planned: Caddy with Souin, nginx FastCGI cache, Vinyl Cache).
-  # The old Souin-only plugin, caddy-souin-cache-manager, stays as it was, is unrelated, and is not listed here.
   cache-manager:
     repo: cache-manager-for-wordpress
     kind: plugin

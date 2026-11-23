@@ -83,7 +83,7 @@ def render_github(m, key):
             continue
         if include is not None and k not in include:
             continue
-        if include is None and p["kind"] == "plugin" and key not in p.get("related_from", []):
+        if include is None and p["kind"] == "plugin" and key is not None and key not in p.get("related_from", []):
             continue
         out.append(f"| [{p['repo']}]({gh_url(m, p)}) | {images_cell(m, p)} | {descs.get(k, p['description'])} |")
     if over.get("also"):
